@@ -14,7 +14,6 @@ HEADERS += \
     cdefs.h \
     debug.h \
     kermit.h \
-    platform.h \
     unix.h
 
 SOURCES += \

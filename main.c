@@ -42,7 +42,7 @@
 */
 #include "cdefs.h"      /* Data types for all modules */
 #include "debug.h"	/* Debugging */
-#include "platform.h"	/* Platform-specific includes and definitions */
+#include "unix.h"	/* Platform-specific includes and definitions */
 #include "kermit.h"	/* Kermit symbols and data structures */
 #ifdef __linux
 #include <errno.h>
@@ -106,15 +106,13 @@ int errorrate = 0;			/* Simulated error rate */
 int seed = 1234;			/* Random number generator seed */
 #endif /* DEBUG */
 
-void
-doexit(int status) {
+void doexit(int status) {
     devrestore();                       /* Restore device */
     devclose();                         /* Close device */
     exit(status);                       /* Exit with indicated status */
 }
 
-void
-usage() {
+void usage() {
     fprintf(stderr,"E-Kermit %s\n",VERSION);
     fprintf(stderr,"Usage: %s <options>\n",xname);
     fprintf(stderr,"Options:\n");
@@ -139,8 +137,7 @@ usage() {
     doexit(FAILURE);
 }
 
-void
-fatal(char *msg1, char *msg2, char *msg3) { /* Not to be called except */
+void fatal(char *msg1, char *msg2, char *msg3) { /* Not to be called except */
     if (msg1) {				    /* from this module */
 	fprintf(stderr,"%s: %s",xname,msg1);
 	if (msg2) fprintf(stderr,"%s",msg2);
@@ -152,8 +149,7 @@ fatal(char *msg1, char *msg2, char *msg3) { /* Not to be called except */
 
 /* Simple user interface for testing */
 
-int
-doarg(char c) {				/* Command-line option parser */
+int doarg(char c) {				/* Command-line option parser */
     int x;				/* Parses one option with its arg(s) */
     char *xp, *s;
     struct stat statbuf;

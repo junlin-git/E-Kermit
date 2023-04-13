@@ -744,8 +744,7 @@ kermit(short f,				/* Function code */
 
 /* Utility routines */
 
-UCHAR *
-getrslot(struct k_data *k, short *n) {   /* Find a free packet buffer */
+UCHAR *getrslot(struct k_data *k, short *n) {   /* Find a free packet buffer */
     register int i;
 /*
   Note: We don't clear the retry count here.
@@ -778,8 +777,7 @@ freerslot(struct k_data *k, short n) {
 #endif /* COMMENT */
 }
 
-UCHAR *
-getsslot(struct k_data *k, short *n) {   /* Find a free packet buffer */
+UCHAR *getsslot(struct k_data *k, short *n) {   /* Find a free packet buffer */
 #ifdef COMMENT
     register int i;
     for (i = 0; i < P_WSLOTS; i++) {    /* Search */
@@ -812,8 +810,7 @@ freesslot(struct k_data * k, short n) {
 
 /*  C H K 1  --  Compute a type-1 Kermit 6-bit checksum.  */
 
-STATIC int
-chk1(UCHAR *pkt, struct k_data * k) {
+STATIC int chk1(UCHAR *pkt, struct k_data * k) {
     register unsigned int chk;
     chk = chk2(pkt,k);
     chk = (((chk & 0300) >> 6) + chk) & 077;
@@ -822,8 +819,7 @@ chk1(UCHAR *pkt, struct k_data * k) {
 
 /*  C H K 2  --  Numeric sum of all the bytes in the packet, 12 bits.  */
 
-STATIC USHORT
-chk2(UCHAR *pkt,struct k_data * k) {
+STATIC USHORT chk2(UCHAR *pkt,struct k_data * k) {
     register USHORT chk;
     for (chk = 0; *pkt != '\0'; pkt++)
       chk += *pkt;
@@ -837,8 +833,7 @@ chk2(UCHAR *pkt,struct k_data * k) {
  Calculate the 16-bit CRC-CCITT of a null-terminated string using a lookup 
  table.  Assumes the argument string contains no embedded nulls.
 */
-STATIC USHORT
-chk3(UCHAR *pkt, struct k_data * k) {
+STATIC USHORT chk3(UCHAR *pkt, struct k_data * k) {
     register USHORT c, crc;
     for (crc = 0; *pkt != '\0'; pkt++) {
 #ifdef COMMENT
@@ -860,8 +855,7 @@ chk3(UCHAR *pkt, struct k_data * k) {
     X_OK on success
     X_ERROR on i/o error
 */
-STATIC int
-spkt(char typ, short seq, int len, UCHAR * data, struct k_data * k) {
+STATIC int spkt(char typ, short seq, int len, UCHAR * data, struct k_data * k) {
 
     unsigned int crc;                   /* For building CRC */
     int i, j, lenpos, m, n, x;		/* Workers */
@@ -970,8 +964,7 @@ spkt(char typ, short seq, int len, UCHAR * data, struct k_data * k) {
 
 /*  N A K  --  Send a NAK (negative acknowledgement)  */
 
-STATIC int
-nak(struct k_data * k, short seq, short slot) {
+STATIC int nak(struct k_data * k, short seq, short slot) {
     int rc;
     rc = spkt('N', seq, 0, (UCHAR *)0, k);
     if (k->ipktinfo[slot].rtr++ > k->retry)
@@ -981,8 +974,7 @@ nak(struct k_data * k, short seq, short slot) {
 
 /*  A C K  --  Send an ACK (positive acknowledgement)  */
 
-STATIC int
-ack(struct k_data * k, short seq, UCHAR * text) {
+STATIC int ack(struct k_data * k, short seq, UCHAR * text) {
     int len, rc;
     len = 0;
     if (text) {                         /* Get length of data */
@@ -999,8 +991,7 @@ ack(struct k_data * k, short seq, UCHAR * text) {
 
 /*  S P A R  --  Set parameters requested by other Kermit  */
 
-STATIC void
-spar(struct k_data * k, UCHAR *s, int datalen) {
+STATIC void spar(struct k_data * k, UCHAR *s, int datalen) {
     int x, y;
     UCHAR c;
 
@@ -1110,8 +1101,7 @@ spar(struct k_data * k, UCHAR *s, int datalen) {
 
 /*  R P A R  --  Send my parameters to other Kermit  */
 
-STATIC int
-rpar(struct k_data * k, char type) {
+STATIC int rpar(struct k_data * k, char type) {
     UCHAR *d;
     int rc, len;
 #ifdef F_CRC
@@ -1184,8 +1174,7 @@ rpar(struct k_data * k, char type) {
     X_OK on success
     X_ERROR if output function fails
 */
-STATIC int
-decode(struct k_data * k, struct k_response * r, short f, UCHAR *inbuf) {
+STATIC int decode(struct k_data * k, struct k_response * r, short f, UCHAR *inbuf) {
 
     register unsigned int a, a7;        /* Current character */
     unsigned int b8;                    /* 8th bit */
@@ -1285,8 +1274,7 @@ numstring(ULONG n, UCHAR * buf, int buflen, struct k_data * k) {
 
 #define SIZEBUFL 32                     /* For number conversions */
 
-STATIC int
-gattr(struct k_data * k, UCHAR * s, struct k_response * r) {
+STATIC int gattr(struct k_data * k, UCHAR * s, struct k_response * r) {
     long fsize, fsizek;                 /* File size */
     UCHAR c;                            /* Workers */
     int aln, i, rc;
@@ -1347,8 +1335,7 @@ gattr(struct k_data * k, UCHAR * s, struct k_response * r) {
 
 #define ATTRLEN 48
 
-STATIC int
-sattr(struct k_data *k, struct k_response *r) {	/* Build and send A packet */
+STATIC int sattr(struct k_data *k, struct k_response *r) {	/* Build and send A packet */
     int i, x, aln;
     short tmp;
     long filelength;
@@ -1420,8 +1407,7 @@ sattr(struct k_data *k, struct k_response *r) {	/* Build and send A packet */
 }
 #endif /* F_AT */
 
-STATIC int
-getpkt(struct k_data *k, struct k_response *r) { /* Fill a packet from file */
+STATIC int getpkt(struct k_data *k, struct k_response *r) { /* Fill a packet from file */
     int i, next, rpt, maxlen;
     static int c;			/* PUT THIS IN STRUCT */
 
@@ -1505,8 +1491,7 @@ getpkt(struct k_data *k, struct k_response *r) { /* Fill a packet from file */
 }
 
 #ifndef RECVONLY
-STATIC int
-sdata(struct k_data *k,struct k_response *r) { /* Send a data packet */
+STATIC int sdata(struct k_data *k,struct k_response *r) { /* Send a data packet */
     int len, rc;
     if (k->cancel) {			/* Interrupted */
 	debug(DB_LOG,"sdata interrupted k->cancel",0,(k->cancel));
@@ -1524,8 +1509,7 @@ sdata(struct k_data *k,struct k_response *r) { /* Send a data packet */
 
 /*  E P K T  --  Send a (fatal) Error packet with the given message  */
 
-STATIC void
-epkt(char * msg, struct k_data * k) {
+STATIC void epkt(char * msg, struct k_data * k) {
     if (!(k->bctf)) {			/* Unless FORCE 3 */
 	k->bct = 1;
     }
@@ -1544,16 +1528,14 @@ encstr(UCHAR * s, struct k_data * k, struct k_response *r) {
 
 /* Decode packet data into a string */
 
-STATIC void
-decstr(UCHAR * s, struct k_data * k, struct k_response * r) {
+STATIC void decstr(UCHAR * s, struct k_data * k, struct k_response * r) {
     k->ostring = s;			/* Set output string pointer  */
     (void) decode(k, r, 0, s);
     *(k->ostring) = '\0';		/* Terminate with null */
     k->ostring = (UCHAR *)0;		/* Reset output string pointer */
 }
 
-STATIC void
-encode(int a, int next, struct k_data * k) { /* Encode character into packet */
+STATIC void encode(int a, int next, struct k_data * k) { /* Encode character into packet */
     int a7, b8, maxlen;
 
     maxlen = k->s_maxlen - 4;
@@ -1601,15 +1583,13 @@ encode(int a, int next, struct k_data * k) { /* Encode character into packet */
     k->xdata[(k->size)] = '\0';		/* Terminate string with null. */
 }
 
-STATIC int
-nxtpkt(struct k_data * k) {		/* Get next packet to send */
+STATIC int nxtpkt(struct k_data * k) {		/* Get next packet to send */
     k->s_seq = (k->s_seq + 1) & 63;	/* Next sequence number */
     k->xdata = k->xdatabuf;
     return(0);
 }
 
-STATIC int
-resend(struct k_data * k) {
+STATIC int resend(struct k_data * k) {
     UCHAR * buf;
     if (!k->opktlen)			/* Nothing to resend */
       return(X_OK);

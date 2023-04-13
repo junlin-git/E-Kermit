@@ -51,7 +51,7 @@
 
 #include "cdefs.h"
 #include "debug.h"
-#include "platform.h"
+#include "unix.h"
 #include "kermit.h"
 
 UCHAR o_buf[OBUFLEN+8];			/* File output buffer */

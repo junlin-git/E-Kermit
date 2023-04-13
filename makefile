@@ -15,11 +15,11 @@ ek: $(OBJS)
 
 #Dependencies
 
-main.o: main.c cdefs.h debug.h kermit.h platform.h
+main.o: main.c cdefs.h debug.h kermit.h 
 
 kermit.o: kermit.c cdefs.h debug.h kermit.h
 
-unixio.o: unixio.c cdefs.h debug.h platform.h kermit.h
+unixio.o: unixio.c cdefs.h debug.h  kermit.h
 
 #Targets
 
@@ -60,7 +60,7 @@ gprof:
 	make "CC=gcc" "CC2=gcc" ek "CFLAGS=-DNODEBUG -pg" "LNKFLAGS=-pg"
 
 clean:
-	rm -f $(OBJS) core
+	rm -f $(OBJS) core  ek e-kermit.pro.us* 
 
 makewhat:
 	@echo 'Defaulting to gcc...'
